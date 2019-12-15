@@ -6,17 +6,21 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 
 class GenerateForm(FlaskForm):
     fragment_size = IntegerField('Fragment size',
-                           validators=[DataRequired(), NumberRange(1, 20)])
+                           validators=[DataRequired(), NumberRange(1, 20)], default=5)
     fragment_count = IntegerField('Fragment count',
-                           validators=[DataRequired(), NumberRange(10, 60)])
+                           validators=[DataRequired(), NumberRange(10, 60)], default=20)
     common_name = StringField('Common name',
-                        validators=[DataRequired(), Length(min=2, max=20)])
+                        validators=[DataRequired(), Length(min=2, max=20)], default='mark')
     delimeter = StringField('Delimeter',
-                        validators=[DataRequired(), Length(min=0, max=5)])
+                        validators=[DataRequired(), Length(min=0, max=5)], default='_')
     start_index = IntegerField('Start index',
-                           validators=[DataRequired()])
-    end_index = IntegerField('Start index',
-                           validators=[DataRequired()])
+                           validators=[DataRequired()], default=1)
+    end_index = IntegerField('End index',
+                           validators=[DataRequired()], default=5)
+
+    def validate_end_index(self, end_index):
+        if self.start_index.data > self.end_index.data:
+            raise ValidationError('End index must be greater than start index')
 
     submit = SubmitField('Generate!')
 
