@@ -10,14 +10,22 @@ from qrgen.forms import GenerateForm
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    form = GenerateForm()
+    return render_template("index.html", form=form)
 
 
-@app.route("/generate", methods=['POST'])
+@app.route("/generate", methods=['GET', 'POST'])
 def generate():
     form = GenerateForm()
+    print(form.validate_on_submit())
     if form.validate_on_submit():
-        gen = Generator(request.form)
+        gen = Generator(
+            form.fragment_size.data,
+            form.fragment_count.data,
+            form.common_name.data,
+            form.delimeter.data,
+            form.start_index.data,
+            form.end_index.data)
         folder_name = str(time.time())
         gen.generate_to(folder_name)
         zip_name = request.form.get('common_name')
@@ -48,6 +56,6 @@ def generate():
         except Exception as e:
             return str(e)
 
-    return render_template("index.html")
+    return render_template("index.html", form=form)
 
 

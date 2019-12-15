@@ -5,7 +5,16 @@ import random
 dict
 
 class Generator:
-    def __init__(self, params={
+
+    def __init__(self, fragment_size, fragment_count, common_name, delimeter, start_index, end_index):
+        self.__fragment_size = int(fragment_size)
+        self.__fragment_count = int(fragment_count)
+        self.__common_name = common_name
+        self.__delimeter = delimeter
+        self.__start_index = int(start_index)
+        self.__end_index = int(end_index)
+
+    def __init__2(self, params={
                  'fragment_size': 5,
                  'fragment_count': 20,
                  'common_name': 'mark',
